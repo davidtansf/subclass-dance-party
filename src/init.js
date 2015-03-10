@@ -28,6 +28,42 @@ $(document).ready(function(){
       Math.random() * 1000
     );
     $('body').append(dancer.$node);
+    window.dancers.push(dancer);
+    dancer.$node.mouseover((function(){
+      var index = window.dancers.indexOf(dancer);
+      window.dancers.splice(index,1);
+      // dance.node from body.chi;dren
+      // console.log($('body').children('.dancer'));
+      dancer.$node.hide();
+      // console.log(dancer);
+      // $("body").remove(dancer.$node);
+    }).bind(dancer));
+    /*
+    dancer.$node.mouseout((function(){
+      var index = window.dancers.indexOf(dancer);
+      window.dancers.splice(index,1);
+      // dance.node from body.chi;dren
+      console.log($('body').children('.dancer'));
+      dancer.$node.show();
+      // console.log(dancer);
+      // $("body").remove(dancer.$node);
+    }).bind(dancer));
+    */
   });
+
+  $(".lineup").on("click", function(event) {
+    for (var i = 0; i < window.dancers.length; i++) {
+      window.dancers[i].lineup();
+    }
+  });
+
+  $('.interact').on('click', function(event){
+    for (var i = 0; i < window.dancers.length; i++){
+      window.dancers[i].interact();
+    }
+    // iterate through all the dancers in window.dancers
+      // call it's interact function
+  });
+  
 });
 
