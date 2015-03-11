@@ -15,8 +15,10 @@ makeMovingDancer.prototype.step = function(){
     // See http://api.jquery.com/category/effects/ for this and
     // other effects you can use on a jQuery-wrapped html tag.
 
-    var randTop = $("body").height() * Math.random();
+    var randTop = $("body").height() * Math.random(); // $("body").height() refers to the height of the entire body, ie. the height of the browser window
     var randLeft = $("body").width() * Math.random();
+    this.top = randTop;
+    this.left = randLeft;
     this.setPosition(randTop, randLeft); // change this later
 
   };

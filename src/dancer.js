@@ -10,6 +10,10 @@ var Makedancer = function(top, left, timeBetweenSteps){
   this.timeBetweenSteps = timeBetweenSteps;
   this.top = top;
   this.left = left;
+  if (rand >= 0 && rand < 4)
+    this.celeb = true;
+  else
+    this.celeb = false;
   
   this.step();
   this.setPosition(top, left);
@@ -24,7 +28,7 @@ Makedancer.prototype.interact = function(){
   // check closest out of all dancers
   // for loop, iterate through all of the dancers
   var lowestDistance = null;
-  var lowestIndex = null;
+  var lowestIndex = null;  
   var distance;
   for (var i = 0; i < window.dancers.length; i++){
     // if dancer[i] === this dancer
@@ -33,6 +37,7 @@ Makedancer.prototype.interact = function(){
       continue;
     }
     // distance = calculate between dancer[i] and this dancer
+    
     distance = Math.pow(window.dancers[i].top - this.top, 2) + Math.pow(window.dancers[i].left - this.left, 2);
     // if first one, save distance as lowest
     if (lowestDistance === null){
@@ -48,14 +53,25 @@ Makedancer.prototype.interact = function(){
       // also save index of lowest
     }
   }
-
+  
   // do something to that one
   // go to that dancers position, or halfway
   this.$node.css({"transition":"top " + this.timeBetweenSteps / 1000 + "s, left " + this.timeBetweenSteps / 1000 + "s"});
+  
+  var storage = {};
+  
+  storage.dancer = this;
+  storage['left'] = window.dancers[lowestIndex].left;
+  storage['top'] = window.dancers[lowestIndex].top;
+
+  return storage;
+
+
+  /*
   this.left = window.dancers[lowestIndex].left;
   this.top = window.dancers[lowestIndex].top;
   this.setPosition(window.dancers[lowestIndex].top, window.dancers[lowestIndex].left);
-
+  */
   // make into pulse dancer
 };
 
@@ -65,6 +81,7 @@ Makedancer.prototype.step = function  () {
     return function(){ context.step() };
   })(this) , this.timeBetweenSteps
   */
+
   setTimeout(this.step.bind(this), this.timeBetweenSteps);
 };
 

@@ -1,5 +1,6 @@
 $(document).ready(function(){
   window.dancers = [];
+  var arnoldCounter = 0;
 
   $(".addDancerButton").on("click", function(event){
     /* This function sets up the click handlers for the create-dancer
@@ -15,6 +16,7 @@ $(document).ready(function(){
      * A new object of the given type will be created and added
      * to the stage.
      */
+    // get the dancer function name
     var dancerMakerFunctionName = $(this).data("dancer-maker-function-name");
 
     // get the maker function for the kind of dancer we're supposed to make
@@ -27,6 +29,7 @@ $(document).ready(function(){
       $("body").width() * Math.random(),
       Math.random() * 1000
     );
+
     $('body').append(dancer.$node);
     window.dancers.push(dancer);
     dancer.$node.mouseover((function(){
@@ -34,21 +37,15 @@ $(document).ready(function(){
       window.dancers.splice(index,1);
       // dance.node from body.chi;dren
       // console.log($('body').children('.dancer'));
-      dancer.$node.hide();
+      this.$node.remove();
+      if (this.celeb === true)
+        arnoldCounter++;
+      else
+        arnoldCounter--;
+      $('.pointsCounter').text(arnoldCounter);
       // console.log(dancer);
       // $("body").remove(dancer.$node);
     }).bind(dancer));
-    /*
-    dancer.$node.mouseout((function(){
-      var index = window.dancers.indexOf(dancer);
-      window.dancers.splice(index,1);
-      // dance.node from body.chi;dren
-      console.log($('body').children('.dancer'));
-      dancer.$node.show();
-      // console.log(dancer);
-      // $("body").remove(dancer.$node);
-    }).bind(dancer));
-    */
   });
 
   $(".lineup").on("click", function(event) {
@@ -58,11 +55,19 @@ $(document).ready(function(){
   });
 
   $('.interact').on('click', function(event){
+    var newlocation = [];
     for (var i = 0; i < window.dancers.length; i++){
-      window.dancers[i].interact();
+      newlocation.push(window.dancers[i].interact());
+    }
+    for (var i = 0; i < newlocation.length; i++) {
+      var storage = newlocation[i];   // storage {dancer:{}, top: #, left: #}
+      storage.dancer.left = storage.left; // dancer {top:#, left#, setPosition: function, step: function}
+      storage.dancer.top = storage.top;
+      storage.dancer.setPosition(storage.top, storage.left);
     }
     // iterate through all the dancers in window.dancers
       // call it's interact function
+    
   });
   
 });
