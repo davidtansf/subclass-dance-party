@@ -10,10 +10,9 @@ var Makedancer = function(top, left, timeBetweenSteps){
   this.timeBetweenSteps = timeBetweenSteps;
   this.top = top;
   this.left = left;
-  if (rand >= 0 && rand < 4)
-    this.celeb = true;
-  else
-    this.celeb = false;
+  this.counter = Math.floor(Math.random() * 2);
+  
+  rand < 4 ? (this.celeb = true) : (this.celeb = false);
   
   this.step();
   this.setPosition(top, left);
@@ -21,7 +20,15 @@ var Makedancer = function(top, left, timeBetweenSteps){
 };  
 //$oneDancer.lineup()
 Makedancer.prototype.lineup = function () {
-  this.setPosition(this.top,"50%");
+  // do a modulo check ,see if odd or even
+  // set width as 0 or 1
+  if (this.counter % 2 == 0) {
+    this.left = $('body').width() * .33;
+  } else {
+    this.left = $('body').width() * .67;
+  }
+  this.setPosition(this.top,this.left);
+  this.moved = true;
 };
 
 Makedancer.prototype.interact = function(){
@@ -46,7 +53,7 @@ Makedancer.prototype.interact = function(){
       continue;
     } else {
     // else if distance lower than lowest, replace lowest as distance
-      if (distance < lowestDistance){
+      if (distance > 50 && distance < lowestDistance){
         lowestDistance = distance;
         lowestIndex = i;
       }
@@ -58,30 +65,15 @@ Makedancer.prototype.interact = function(){
   // go to that dancers position, or halfway
   this.$node.css({"transition":"top " + this.timeBetweenSteps / 1000 + "s, left " + this.timeBetweenSteps / 1000 + "s"});
   
-  var storage = {};
-  
+  var storage = {};  
   storage.dancer = this;
   storage['left'] = window.dancers[lowestIndex].left;
   storage['top'] = window.dancers[lowestIndex].top;
-
   return storage;
 
-
-  /*
-  this.left = window.dancers[lowestIndex].left;
-  this.top = window.dancers[lowestIndex].top;
-  this.setPosition(window.dancers[lowestIndex].top, window.dancers[lowestIndex].left);
-  */
-  // make into pulse dancer
 };
 
 Makedancer.prototype.step = function  () {
-  /* 
-  window.setTimeout((function(context) { 
-    return function(){ context.step() };
-  })(this) , this.timeBetweenSteps
-  */
-
   setTimeout(this.step.bind(this), this.timeBetweenSteps);
 };
 
@@ -92,9 +84,3 @@ Makedancer.prototype.setPosition = function (top, left) {
   };
   this.$node.css(styleSettings);
 };
-
-// base dancer
-//   .lineup
-//   .step
-//   .setPosition = function(top, left)
-//         this.css = ({"top": top , "left": left });

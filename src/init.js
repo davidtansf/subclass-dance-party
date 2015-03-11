@@ -43,7 +43,6 @@ $(document).ready(function(){
       else
         arnoldCounter--;
       $('.pointsCounter').text(arnoldCounter);
-      // console.log(dancer);
       // $("body").remove(dancer.$node);
     }).bind(dancer));
   });
@@ -64,6 +63,7 @@ $(document).ready(function(){
       storage.dancer.left = storage.left; // dancer {top:#, left#, setPosition: function, step: function}
       storage.dancer.top = storage.top;
       storage.dancer.setPosition(storage.top, storage.left);
+      storage.dancer.moved = true;
     }
     // iterate through all the dancers in window.dancers
       // call it's interact function
